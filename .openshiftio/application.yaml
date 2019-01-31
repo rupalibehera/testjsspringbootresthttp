@@ -110,6 +110,8 @@ objects:
         secret: ${GITHUB_WEBHOOK_SECRET}
       type: GitHub
     - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
   status:
     lastVersion: 0
 - apiVersion: v1
