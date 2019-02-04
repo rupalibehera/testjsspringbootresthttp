@@ -1,4 +1,4 @@
-@Library('github.com/fabric8io/osio-pipeline@master') _
+@Library('github.com/fabric8io/osio-pipeline@update_readme') _
 
 osio {
 
@@ -10,7 +10,7 @@ osio {
      //runTest commands: integrationTestCmd
      spawn image: 'java',
            commands: "java -version", 
-           envVar: ["a":"b", "MAVEN_OPTS": '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn']
+           envVars: ["a":"b", "MAVEN_OPTS": '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn']
   }
 
   cd {
