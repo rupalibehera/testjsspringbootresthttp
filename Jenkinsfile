@@ -1,28 +1,31 @@
-@Library('github.com/fabric8io/osio-pipeline@master') _
+#!/usr/bin/groovy
 
-osio {
+@Library('github.com/fabric8io/fabric8-pipeline-library@master')
+def canaryVersion = "1.0.${env.BUILD_NUMBER}"
+def utils = new io.fabric8.Utils()
 
-  config runtime: 'java', version: '1.8'
+mavenNode {
+  checkout scm
+  if (utils.isCI()) {
 
-  ci {
+    mavenCI {
+        integrationTestCmd =
+             "mvn org.apache.maven.plugins:maven-failsafe-plugin:integration-test \
+                org.apache.maven.plugins:maven-failsafe-plugin:verify \
+                -Dnamespace.use.current=false -Dnamespace.use.existing=${utils.testNamespace()} \
+                -Dit.test=*IT -DfailIfNoTests=false -DenableImageStreamDetection=true \
+                -P openshift-it"
+    }
 
-     integrationTestCmd = "mvn verify integration-test -Dnamespace.use.current=false -Dnamespace.use.existing=${testNamespace()} -Dit.test=*IT -DfailIfNoTests=false -DenableImageStreamDetection=true -Popenshift,openshift-it"
-     runTest commands: integrationTestCmd
-  }
-
-  cd {
-
-    // processing openshift template present in .openshiftio/application.yaml
-    def resources = processTemplate(params: [
-          release_version: "1.0.${env.BUILD_NUMBER}"
-    ])
-
-    // performs an s2i build
-    build resources: resources
-    // deploy to stage environment
-    deploy resources: resources, env: 'stage'
-    // wait for user to approve the promotion to "run" environment
-    deploy resources: resources, env: 'run', approval: 'manual'
-
+  } else if (utils.isCD()) {
+    echo 'NOTE: running pipelines for the first time will take longer as build and base docker images are pulled onto the node'
+    container(name: 'maven', shell:'/bin/bash') {
+      stage('Build Image') {
+        mavenCanaryRelease {
+          version = canaryVersion
+        }
+      }
+    }
   }
 }
+
