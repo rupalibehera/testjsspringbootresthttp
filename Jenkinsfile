@@ -7,7 +7,7 @@ osio {
   ci {
     echo "CI....."
      integrationTestCmd = "mvn verify integration-test -Dnamespace.use.current=false -Dnamespace.use.existing=${testNamespace()} -Dit.test=*IT -DfailIfNoTests=false -DenableImageStreamDetection=true -Popenshift,openshift-it"
-     runTest commands: integrationTestCmd
+     //runTest commands: integrationTestCmd
     spawn image: 'java',
           commands: "java -version",
           envVar: ["a":"b", "MAVEN_OPTS": '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn']
