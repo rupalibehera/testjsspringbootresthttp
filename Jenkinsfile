@@ -12,7 +12,7 @@ osio {
   }
 
   cd {
-
+     echo "Test cd"
     // processing openshift template present in .openshiftio/application.yaml
     def resources = processTemplate(params: [
           release_version: "1.0.${env.BUILD_NUMBER}"
