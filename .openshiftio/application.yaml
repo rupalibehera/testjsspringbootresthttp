@@ -93,7 +93,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: "runtime:${RUNTIME_VERSION}"
+          name: runtime:${RUNTIME_VERSION}
         incremental: true
         env:
         - name: MAVEN_ARGS_APPEND
