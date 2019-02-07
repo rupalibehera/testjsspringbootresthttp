@@ -1,4 +1,4 @@
-@Library('github.com/rupalibehera/osio-pipeline@update_readme') _
+@Library('github.com/piyush-garg/osio-pipeline@iss_74') _
 
 osio {
 
